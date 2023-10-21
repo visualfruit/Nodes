@@ -1,0 +1,22 @@
+{
+    "DataTypes": [
+        "Group",
+        "String",
+        "Int",
+        "Boolean",
+        "Bitmap",
+        "Mesh",
+        "Subdivision",
+        "DrawShape",
+        "KBlurXY",
+        "Mask",
+        "Layers",
+        "Output",
+        "Transform",
+        "Points",
+        "MixRGB",
+        "StableDiffusion",
+        "Math",
+        "Rasterize"
+    ]
+}

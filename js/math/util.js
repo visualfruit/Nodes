@@ -1,0 +1,21 @@
+class Util {
+    static toggleBool(input) {
+        return !input;
+    }
+    static getImageRatio(input) {
+        return input.width / input.height;
+    }
+    static map(value1, value2, newValue){
+        var factor = value1/value2*newValue;
+        return factor;
+    }
+    static getTime() {
+        var d = new Date();
+        return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + " " + d.getDate() + "." + d.getMonth() + "." + d.getYear();
+    }
+    static getCenterPosition(outerRect, innerRect){
+        let deltaX = (outerRect.width-innerRect.width)*.5;
+        let deltaY = (outerRect.height-innerRect.height)*.5;
+        return {x: deltaX, y: deltaY};
+    }
+}
