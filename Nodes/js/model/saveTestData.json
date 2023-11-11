@@ -1,0 +1,88 @@
+{
+    "vfData": {
+        "Header": {
+            "Name": "TestData",
+            "Date": "25.05.2023",
+            "Version": "1.0 Beta"
+        },
+        "Nodes": [
+            {
+            "Name": "Mesh.001",
+            "Type": "Mesh",
+            "Vertices": [{"id": 0, "x": 100, "y": 100,"c": "true"},
+                         {"id": 1, "x": 200, "y": 100,"c": "true"},
+                         {"id": 2, "x": 100, "y": 300,"c": "true"}
+                         ],
+            "Edges": [{"id": 0, "from": 0, "to": 1}],
+            "Connections": {
+                "In": [],
+                "Out": [0]
+                },
+            "Position": {"x": 20, "y": 100}
+            },
+            {
+            "Name": "Subdivision.001",
+            "Type": "Subdivision",
+            "Iterations": 3,
+            "Connections": {
+                "In": [0],
+                "Out": [1]
+                },
+            "Position": {"x": 320, "y": 100}
+            },
+            {
+            "Name": "DrawShape.001",
+            "Type": "DrawShape",
+            "FillColor": "0xDD0000",
+            "StrokeColor": "0x0000AA",
+            "StrokeThickness": 4,
+            "FillAlpha": 0.9,
+            "StrokeAlpha": 0.5,
+            "isFill": "true",
+            "Connections": {
+                "In": [1],
+                "Out": [2,3]
+                },
+            "Position": {"x": 400, "y": 550}
+            },
+            {
+            "Name": "KBlurXY.001",
+            "Type": "KBlurXY",
+            "BlurX": 50,
+            "BlurY": 100,
+            "Connections": {
+                "In": [2],
+                "Out": [4]
+                },
+            "Position": {"x": 600, "y": 350}         
+            },
+            {
+            "Name": "Mask.001",
+            "Type": "Mask",
+            "Connections": {
+                "In": [4,3],
+                "Out": [5]
+                },
+            "Position": {"x": 400, "y": -150}
+            },
+            {
+            "Name": "Output.001",
+            "Type": "Output",
+            "Active": "true",
+            "Connections": {
+                "In": [5],
+                "Out": []
+                },
+            "Position": {"x": 850, "y": 200}
+            }
+        ],
+        "Connections": [
+            {"From": {"Node": "Mesh.001", "Port": 1}, "To": {"Node": "Subdivision.001", "Port": 2}},
+            {"From": {"Node": "Subdivision.001", "Port": 1}, "To": {"Node": "DrawShape.001", "Port": 2}},
+            {"From": {"Node": "DrawShape.001", "Port": 1}, "To": {"Node": "KBlurXY.001", "Port": 2}},
+            {"From": {"Node": "DrawShape.001", "Port": 1}, "To": {"Node": "Mask.001", "Port": 3}},
+            {"From": {"Node": "KBlurXY.001", "Port": 1}, "To": {"Node": "Mask.001", "Port": 2}},
+            {"From": {"Node": "Mask.001", "Port": 1}, "To": {"Node": "Output.001", "Port": 1}}
+        ]
+    }
+}

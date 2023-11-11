@@ -1,0 +1,57 @@
+{
+"Nodes": {
+    "Mesh":
+        {
+            "Type": "Mesh",
+            "Vertices": "array",
+            "Edges": "array"
+        },
+    "DrawShape":
+        {
+            "Type": "DrawShape",
+            "DrawContainer": "container",
+            "FillColor": "int",
+            "StrokeColor": "int",
+            "StrokeThickness": "int",
+            "isStroke": "boolean",
+            "isFill": "boolean"
+        },
+    "KawaseBlurXY":
+        {
+            "Type": "KawaseBlurXY",
+            "BlurContainer": "container",
+            "BlurX": "int",
+            "BlurY": "int",
+            "Quality": "int"
+        },
+    "Image":
+        {
+            "Type": "Image",
+            "Width": "int",
+            "Height": "int",
+            "Pixeldata": "bitmap"
+        }    ,    
+    "Subdivision":
+        {
+            "Type": "Subdivision",
+            "Iterations": "int"
+        },
+    "Mask":
+        {
+            "Type": "Mask",
+            "inputData": "container",
+            "inputMaskData": "container"
+        },
+    "Output":
+        {
+            "Type": "Output",
+            "inputData": "container"
+        },
+    "Layers":
+        {
+            "Type": "Layers",
+            "LayerArray": "array",
+            "Container": "container"
+        }
+    }
+}

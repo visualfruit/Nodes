@@ -1,0 +1,73 @@
+{
+    "TemplateNodes": [
+            {
+            "Name": "",
+            "Type": "Mesh",
+            "Vertices": [{"id": 0, "x": 100, "y": 100,"c": "true"},
+                         {"id": 1, "x": 200, "y": 100,"c": "true"},
+                         {"id": 2, "x": 100, "y": 300,"c": "true"}
+                         ],
+            "Edges": [{"id": 0, "from": 0, "to": 1}],
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}
+            },
+            {
+            "Name": "",
+            "Type": "Subdivision",
+            "Iterations": 3,
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}
+            },
+            {
+            "Name": "",
+            "Type": "DrawShape",
+            "FillColor": "0xDD0000",
+            "StrokeColor": "0x0000AA",
+            "StrokeThickness": 4,
+            "FillAlpha": 0.9,
+            "StrokeAlpha": 0.5,
+            "isFill": "true",
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}
+            },
+            {
+            "Name": "",
+            "Type": "KBlurXY",
+            "BlurX": 0,
+            "BlurY": 0,
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}         
+            },
+            {
+            "Name": "",
+            "Type": "Mask",
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}
+            },
+            {
+            "Name": "",
+            "Type": "Output",
+            "Active": "true",
+            "Connections": {
+                "In": [],
+                "Out": []
+                },
+            "Position": {"x": 0, "y": 0}
+            }
+        ]
+}
