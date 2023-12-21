@@ -1,22 +1,18 @@
 class UIControls {
-    constructor(app, uiNodeArray, connections, uiNodeTemplateArray, container, containerLinks, connectionLine, selRect) {
+    constructor(app, uiNodeArray, connections, uiNodeTemplateArray, container, containerLinks, connectionLine, selRect, dropDownMenu) {
+        
         this.app = app;
-
-        // Arrays that hold the UI Nodes data
         this.uiNodeArray = uiNodeArray;
         this.connections = connections;
         this.uiNodeTemplateArray = uiNodeTemplateArray;
-
         // display objects
         this.container = container;
         this.containerLinks = containerLinks;
         this.connectionLine = connectionLine;
         this.selRect = selRect;
-
+        this.dropDownMenu = dropDownMenu;
         this.selectedNodes = []; //stores selected node-ids
         this.hitObject = null;
-
-        //this.delta;
 
         // Mouse information
         this.lastMousePosition = new PIXI.Point();
@@ -24,21 +20,14 @@ class UIControls {
         this.releasePosition = new PIXI.Point();
         this.oldItemPositions = []; //stores the position of all selected windows when they are moved together
         this.selArea = {x: [0,0], y: [0,0]};
-
-        this.moveHandlerBind = this.onPress_Move.bind(this);
-        this.mouseUpMoveBind = this.onMouseUp_Move.bind(this);
-
-        this.onPortMouseMoveBind = this.onPortMouseMove.bind(this);
-
-        this.isDragging = false;
-
-        //
-        //this.pointerData = null;
         this.initialPointerPos = new PIXI.Point(0,0);
         this.newPointerPos = new PIXI.Point(0,0);
         this.delta = new PIXI.Point(0,0);
+        this.isDragging = false;
 
-        //this.app.view.addEventListener('pointerdown', this.onPointerDown.bind(this));
+        this.moveHandlerBind = this.onPress_Move.bind(this);
+        this.mouseUpMoveBind = this.onMouseUp_Move.bind(this);
+        this.onPortMouseMoveBind = this.onPortMouseMove.bind(this);
         this.boundPointerUpHandler = this.onPointerUp.bind(this);
         // Event listeners for drawing
         this.app.renderer.plugins.interaction.on("pointerdown", this.onPointerDown.bind(this));
@@ -49,32 +38,37 @@ class UIControls {
 
     onPointerMove(evt) {
         this.newPointerPos.copyFrom(evt.data.getLocalPosition(this.container));
-        //console.log("newPointerPos: " + this.newPointerPos.x);
         this.delta.x = this.newPointerPos.x - this.initialPointerPos.x;
         this.delta.y = this.newPointerPos.y - this.initialPointerPos.y;
-        //console.log("delta: " + this.delta.x);
     }
 
     onPointerDown(evt) {
 
         // get the object that you clicked on
         this.hitObject = this.app.renderer.plugins.interaction.hitTest(evt.data.global, this.app.stage);
-        let state = null;
+        let context = null;
 
         // set the initial pointer
         this.initialPointerPos.copyFrom(evt.data.getLocalPosition(this.container));
 
+        if (event.button === 2) {
+            // Right mouse button (button code 2)
++           console.log('Right mouse button clicked!');
+            this.dropDownMenu.showSubMenuRMB(new PIXI.Point(evt.data.global.x, evt.data.global.y));
+        }
+
         if (this.hitObject) {
           // Handle the interaction with the hit object
-          console.log("Clicked on:", this.hitObject.name);
-          state = this.hitObject.name;
+          context = this.hitObject.name;
         } else {
           // Handle the interaction with the background or other non-hit objects
           //console.log("Clicked on the background or non-hit object");
-          state = "stage";
+          context = "stage";
         }
 
-        switch (state) {
+        console.log("context: " + context);
+
+        switch (context) {
             case "stage":
                 console.log('go to selectHandler');
                 this.app.renderer.plugins.interaction.on("pointerup", this.boundPointerUpHandler);
@@ -82,7 +76,7 @@ class UIControls {
                 break;
             case "unselected":
                 console.log('go to select and move');
-                this.app.renderer.plugins.interaction.on("pointerup", this.boundPointerUpHandler);
+                //this.app.renderer.plugins.interaction.on("pointerdown", this.boundPointerUpHandler);
                 this.selectAndMoveHandler(evt.target.parent);
                 break;
             case "selected":
@@ -101,7 +95,7 @@ class UIControls {
                 console.log("clicked on menu item");
                 this.addNode(this.hitObject.type);
             default:
-                console.log("go to selectHandler");
+                console.log("no matched context");
         }
     }
 
@@ -110,7 +104,8 @@ class UIControls {
         for (var i = 0; i < this.uiNodeArray.length; i++) {
             this.hittest(this.uiNodeArray[i]);
         }
-        this.app.renderer.plugins.interaction.removeListener("pointerup", this.boundPointerUpHandler);
+        //this.app.renderer.plugins.interaction.removeListener("pointerup", this.boundPointerUpHandler);
+        this.app.renderer.plugins.interaction.off("pointerup", this.boundPointerUpHandler);
     }
 
     setSelectionRectangle() {
@@ -130,7 +125,6 @@ class UIControls {
             inputBox.drawBoxSelected();
             inputBox.nodeBox.headerButton.name = "selected";
             this.selectedNodes.push(inputBox);
-            //console.log("selectionArrayHittest: " + this.selectedNodes);
         } else {
             inputBox.drawBox();
             inputBox.nodeBox.headerButton.name = "unselected";
@@ -166,9 +160,11 @@ class UIControls {
     selectAndMoveHandler(inputBox) {
         inputBox.parent.parent.addChild(inputBox.parent);
         for (var i = 0; i < this.selectedNodes.length; i++) {
+            this.selectedNodes[i].nodeBox.headerButton.name = "unselected";
             this.selectedNodes[i].drawBox();
         }
         this.selectedNodes = [];
+        inputBox.parent.nodeBox.headerButton.name = "selected";
         this.selectedNodes.push(inputBox.parent);
         inputBox.parent.drawBoxSelected();
         this.moveHandler();
@@ -194,40 +190,31 @@ class UIControls {
     }
 
     connectionInputHandler(event) {
+        const toNode = this.hitObject.parent.parent;
+        const toPortIndex = this.hitObject.parent.index;
+        const portUsed = this.isPortUsed(toNode, toPortIndex);
 
-        var oldInConnObj = null;
+        if (portUsed){
 
-        var toNode = this.hitObject.parent.parent;
-        var toNodePort = this.hitObject;
+            const conId = this.getConnectionIdOfToPortIndex(toNode.label, toPortIndex);
+            const fromNode = this.getFromNodeByConnectionId(conId);
+            const oldInConnObj = this.removeItemById(conId);
 
-        if (toNode.node.Connections.In.length > 0){
-
-            var index = toNode.node.Connections.In[0];
-            oldInConnObj = this.connections[index];
-            console.log("index und object " + index);
-            console.log("index und object " + JSON.stringify(oldInConnObj));
-            console.log("index und object " + JSON.stringify(this.connections));
-
-            this.connections.splice(index, 1);
+            this.removeIndexFromArray(toNode.node.Connections.In, conId);
+            this.removeIndexFromArray(fromNode.node.Connections.Out, conId);
 
             this.containerLinks.clear();
             this.updateConnections(this.uiNodeArray);
 
-            const fromNode = this.uiNodeArray.find(node => node.label === oldInConnObj.From.Node);
-            //console.log("fromNode " + fromNode.label);
-
-
-            // find the From Port from the connected node
-            this.hitObject = this.uiNodeArray.find(node => node.label === oldInConnObj.From.Node).ports[oldInConnObj.From.Port-1].button;
-
-            this.isDragging = true;
-            this.app.renderer.plugins.interaction.on("pointermove", this.onPortMouseMoveBind);
-            this.app.renderer.plugins.interaction.on('pointerup', this.onPortButtonUp.bind(this));
-              
+            this.hitObject = this.uiNodeArray.find(node => node.label === oldInConnObj.FromNode).ports[oldInConnObj.FromPort-1].button;   
+        
         }
         else {
-            console.log("port has no connection");
+            console.log("This port is not used");
         }
+        this.isDragging = true;
+        this.app.renderer.plugins.interaction.on("pointermove", this.onPortMouseMoveBind);
+        this.app.renderer.plugins.interaction.on('pointerup', this.onPortButtonUp.bind(this));
     }
 
     onPortMouseMove(event) {
@@ -252,69 +239,77 @@ class UIControls {
             this.app.renderer.plugins.interaction.on('pointerup', this.onPortButtonUp.bind(this));
             this.connectionLine.clear();
 
-            const hitPort = this.app.renderer.plugins.interaction.hitTest(event.data.global, this.app.stage);
+            const hitReleaseObject = this.app.renderer.plugins.interaction.hitTest(event.data.global, this.app.stage);
 
-            var fromNode = this.hitObject.parent.parent;
-            var toNode = hitPort.parent.parent;
+            if (hitReleaseObject !== null){
 
-            if (fromNode.dataType == toNode.dataType && fromNode !== toNode){
+                const fromPort = this.hitObject.parent;
+                const toPort = hitReleaseObject.parent;
+            
+                const fromNode = this.hitObject.parent.parent;
+                const toNode = hitReleaseObject.parent.parent;
 
-                //check which receiving input port
-                
-                const fromNodeIndex = fromNode.name;
-                const fromPortIndex = hitObject.parent.index;
-
-                const toNodeIndex = toNode.name;
-                const toPortIndex = this.hitObject.index;
-
-                console.log("fromPortIndex" + fromPortIndex);
-                console.log("toPortIndex  " + toPortIndex);
-                console.log("fromNodeIndex" + fromNodeIndex);
-                console.log("toNodeIndex  " + toNodeIndex);
-
-                // Create new connection
-                
-                const connObj = this.newConnection(this.hitObject.parent, hitObject.parent);
-                this.connections.push(connObj);
-                fromNode.node.Connections.In.push(this.connections.length-1);
-                toNode.node.Connections.Out.push(this.connections.length-1);
-
-                // check for existing connection to this port
-                // if any connection to the node.name & node.index:
-                // delete from connection_array & from input-node & from output-node
-                const oldInConnObj = toNode.node.Connections.In[0];
-
-                toNode.node.Connections.In.forEach(obj => {
-                    console.log("in-connection object: " + JSON.stringify(obj));
-                });
-
-                this.uiNodeArray.forEach(obj => {
-                    const outArray = obj.node.Connections.Out;
-                    console.log(JSON.stringify(obj.node));
-                    const indexToRemove = outArray.findIndex(item => JSON.stringify(item) === JSON.stringify(oldInConnObj));
+                const flag1 = () => {
+                    return fromPort.name !== toPort.name;
+                  };
                   
-                    if (indexToRemove !== -1) {
-                      outArray.splice(indexToRemove, 1);
-                    }
-                });
+                  // Call the flag1 function and store the result in a variable
+                const areNamesEqual = flag1();                
 
-                // check for already existing connection
-                const isObjectInArray = toNode.node.Connections.Out.some(obj => JSON.stringify(obj) === JSON.stringify(connObj));
+                console.log("dataTypeFrom " + fromPort.type);
+                console.log("fromPort.name " + toPort.type);
+                console.log("fromPort.name " + toPort.name);
+                console.log("areNamesEqual " + areNamesEqual);
 
-                if (!isObjectInArray) {
-                    // add the new connectionObject to the input and output Node-Data
-                    fromNode.node.Connections.Out.push(connObj);
-                    toNode.node.Connections.In[0] = connObj;
+                if (fromPort.dataType == toPort.dataType && fromNode !== toNode && fromPort.name !== toPort.name){
+        
+                    //check which receiving input port
                     
-                    // clear and redraw Connections
+                    const fromNodeIndex = fromNode.name;
+                    const fromPortIndex = this.hitObject.parent.index;
+                    const toNodeIndex = toNode.name;
+                    const toPortIndex = this.hitObject.index;
+                    const oldConId = this.getConnectionIdOfToPortIndex(hitReleaseObject.parent.parent.label, hitReleaseObject.parent.index);
+
+                    if (oldConId !== null){
+
+                        const oldFromNode = this.uiNodeArray.find(node => node.label === this.connections[oldConId].FromNode);
+                        console.log("old from node " + oldFromNode.label);
+                        // remove old connection at Target
+                        const oldConnection = this.removeItemById(oldConId);
+
+                        console.log("oldConnectionRemovedatIndex: " + oldConId + " conn: " + JSON.stringify(oldConnection));
+
+                        this.removeIndexFromArray(toNode.node.Connections.In, oldConId);
+                        this.removeIndexFromArray(oldFromNode.node.Connections.Out, oldConId);
+            
+                    }
+                    else {
+                        console.log("OldConn: " + oldConId);
+                    }
+
+                    // Create new connection
+                    
+                    const connObj = this.newConnection(this.hitObject.parent, hitReleaseObject.parent, this.getID());
+                    this.connections.push(connObj);
+                    fromNode.node.Connections.In.push(this.connections.length-1);
+                    toNode.node.Connections.Out.push(this.connections.length-1);
+
+                    // check for existing connection to this port
+                    // if any connection to the node.name & node.index:
+                    // delete from connection_array & from input-node & from output-node
+                    const oldInConnObj = toNode.node.Connections.In[0];
+
+                    toNode.node.Connections.In.forEach(obj => {
+                        //console.log("in-connection object: " + JSON.stringify(obj));
+                    });
+
+
                     this.containerLinks.clear();
-                    this.updateConnections(this.uiNodeArray);     
-                }
-                else{
-                    console.log("already exists");
-                }
+                    this.updateConnections(this.uiNodeArray);  
 
-
+                    console.log(JSON.stringify(this.connections));
+                }
             }
             else {
                 console.log("nein, es passt nicht und kann nicht verbunden werden");
@@ -322,8 +317,8 @@ class UIControls {
         } 
     }
 
-    newConnection(port1, port2){
-        return {From: {Node: port1.parent.label, Port: port1.index}, To: {Node: port2.parent.label, Port: port2.index}};
+    newConnection(port1, port2, id){
+        return {Id: id,FromNode: port1.parent.label, FromPort: port1.index, ToNode: port2.parent.label, ToPort: port2.index};
     }
 
     drawNewConnectionLine(Point1, Point2) {
@@ -339,6 +334,8 @@ class UIControls {
 
     moveHandler() {
         this.oldItemPositions = [];
+
+        console.log("das ist der status: " + this.selectedNodes[0].label);
         for (var i = 0; i < this.selectedNodes.length; i++) {
             this.selectedNodes[i].updateOldLocation();
         }
@@ -377,11 +374,10 @@ class UIControls {
         if (this.connections.length > 0) {
             this.connections.forEach((connection) => {
 
-                var fromNode = uiNodeArray.find(node => node.label === connection.From.Node);
-                var toNode = uiNodeArray.find(node => node.label === connection.To.Node);
-
-                var index = connection.From.Port-1;
-                var index2 = connection.To.Port-1;
+                const fromNode = uiNodeArray.find(node => node.label === connection.FromNode);
+                const toNode = uiNodeArray.find(node => node.label === connection.ToNode);
+                const index = connection.FromPort-1;
+                const index2 = connection.ToPort-1;
 
                 const point1 = new PIXI.Point(fromNode.ports[index].x + fromNode.x, fromNode.ports[index].y + fromNode.y);
                 const point2 = new PIXI.Point(toNode.ports[index2].x + toNode.x, toNode.ports[index2].y + toNode.y);
@@ -405,9 +401,9 @@ class UIControls {
     }
 
     addNode(type){
-        var count = 0;
-        const name = `${type}.${String(count).padStart(3, '0')}`;
-        //const nodeTypeData = this.uiNodeTemplateArray.filter(obj => obj.Type === type);
+        let count = 0;
+
+        const name = this.generateUniqueName(this.uiNodeArray, type);
         const index = this.uiNodeTemplateArray.findIndex(obj => obj.Type === type);
 
         this.uiNodeTemplateArray[index].Name = name;
@@ -426,4 +422,81 @@ class UIControls {
     updateTemplateData(data){
         this.uiNodeTemplateArray = data;
     }
+
+    getID() {
+        const ids = new Set(this.connections.map(obj => obj.Id)); // Collect all existing IDs in a Set
+      
+        let expectedId = 0;
+      
+        // Find the next available unique ID
+        while (ids.has(expectedId)) {
+          expectedId++;
+        }
+      
+        return expectedId;
+      }
+
+    getConnectionIdOfToPortIndex(toNode, index){
+        for (const obj of this.connections) {
+            if (obj.ToNode === toNode && obj.ToPort === index) {
+                return obj.Id;
+            }
+        }
+        return null; // If no matching element is found
+    }
+
+    removeIndexFromArray(array, index){
+        for (const i of array) {
+            if (i == index) {
+                array.splice(i);
+            }
+        }
+    }
+
+    getFromNodeByConnectionId(id){
+        const nodeName = this.connections[id].FromNode;
+        for (const node of this.uiNodeArray){
+            if (nodeName == node.label) {
+                return node;
+            }
+        }
+    }
+
+    isPortUsed(toNode, toPortIndex){
+        for (let i = 0; i < toNode.node.Connections.In.length; i++) {
+            for (let j = 0; j < this.connections.length; j++) {
+                if (this.connections[j].ToPort == toPortIndex) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    removeItemById(idToRemove) {
+        const indexToRemove = this.connections.findIndex(obj => obj.Id === idToRemove);
+      
+        if (indexToRemove !== -1) {
+            const removedItem = this.connections.splice(indexToRemove, 1);
+            return removedItem[0];
+        } else {
+            return null; // Return null if item with the specified Id is not found
+        }
+      }
+
+    generateUniqueName(existingObjects, category) {
+        const existingNames = existingObjects.map(obj => obj.label);
+
+        console.log("allNames " + existingNames);
+        let suffix = 1;
+        let newName;
+        do {
+            newName = `${category}.${String(suffix).padStart(3, '0')}`;
+            const found = existingNames.find(name => name === newName);
+            if (!found) {
+                return newName;
+            }
+            suffix++;
+        } while (true);
+      }
 }

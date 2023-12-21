@@ -21,29 +21,59 @@
             "Position": {"x": 20, "y": 100}
             },
             {
+                "Name": "Mesh.002",
+                "Type": "Mesh",
+                "Vertices": [{"id": 0, "x": 100, "y": 100,"c": "true"},
+                             {"id": 1, "x": 200, "y": 100,"c": "true"},
+                             {"id": 2, "x": 200, "y": 200,"c": "true"},
+                             {"id": 3, "x": 100, "y": 200,"c": "true"}
+                             ],
+                "Edges": [{"id": 0, "from": 0, "to": 1}],
+                "Connections": {
+                    "In": [],
+                    "Out": [1]
+                    },
+                "Position": {"x": 20, "y": 200}
+                },
+            {
             "Name": "Subdivision.001",
             "Type": "Subdivision",
             "Iterations": 3,
             "Connections": {
-                "In": [0],
-                "Out": [1]
+                "In": [],
+                "Out": []
                 },
-            "Position": {"x": 320, "y": 100}
+            "Position": {"x": 20, "y": -100}
             },
             {
             "Name": "DrawShape.001",
             "Type": "DrawShape",
-            "FillColor": "0xDD0000",
-            "StrokeColor": "0x0000AA",
-            "StrokeThickness": 4,
+            "FillColor": "0x8709F0",
+            "StrokeColor": "0xAABAAA",
+            "StrokeThickness": 0,
             "FillAlpha": 0.9,
             "StrokeAlpha": 0.5,
             "isFill": "true",
             "Connections": {
-                "In": [1],
-                "Out": [2,3]
+                "In": [0],
+                "Out": [2]
                 },
-            "Position": {"x": 400, "y": 550}
+            "Position": {"x": 300, "y": -150}
+            },
+            {
+            "Name": "DrawShape.002",
+            "Type": "DrawShape",
+            "FillColor": "0xDD0000",
+            "StrokeColor": "0x000FAA",
+            "StrokeThickness": 4,
+            "FillAlpha": 1,
+            "StrokeAlpha": 0,
+            "isFill": "true",
+            "Connections": {
+                "In": [1],
+                "Out": [3]
+                },
+            "Position": {"x": 300, "y": 150}
             },
             {
             "Name": "KBlurXY.001",
@@ -54,7 +84,7 @@
                 "In": [2],
                 "Out": [4]
                 },
-            "Position": {"x": 600, "y": 350}         
+            "Position": {"x": 600, "y": -150}         
             },
             {
             "Name": "Mask.001",
@@ -63,7 +93,7 @@
                 "In": [4,3],
                 "Out": [5]
                 },
-            "Position": {"x": 400, "y": -150}
+            "Position": {"x": 900, "y": 0}
             },
             {
             "Name": "Output.001",
@@ -73,16 +103,16 @@
                 "In": [5],
                 "Out": []
                 },
-            "Position": {"x": 850, "y": 200}
+            "Position": {"x": 1200, "y": 0}
             }
         ],
         "Connections": [
-            {"From": {"Node": "Mesh.001", "Port": 1}, "To": {"Node": "Subdivision.001", "Port": 2}},
-            {"From": {"Node": "Subdivision.001", "Port": 1}, "To": {"Node": "DrawShape.001", "Port": 2}},
-            {"From": {"Node": "DrawShape.001", "Port": 1}, "To": {"Node": "KBlurXY.001", "Port": 2}},
-            {"From": {"Node": "DrawShape.001", "Port": 1}, "To": {"Node": "Mask.001", "Port": 3}},
-            {"From": {"Node": "KBlurXY.001", "Port": 1}, "To": {"Node": "Mask.001", "Port": 2}},
-            {"From": {"Node": "Mask.001", "Port": 1}, "To": {"Node": "Output.001", "Port": 1}}
+            {"Id": 0, "FromNode": "Mesh.001", "FromPort": 1, "ToNode": "DrawShape.001", "ToPort": 2},
+            {"Id": 1, "FromNode": "Mesh.002", "FromPort": 1, "ToNode": "DrawShape.002", "ToPort": 2},
+            {"Id": 2, "FromNode": "DrawShape.001", "FromPort": 1, "ToNode": "KBlurXY.001", "ToPort": 2},
+            {"Id": 3, "FromNode": "DrawShape.002", "FromPort": 1, "ToNode": "Mask.001", "ToPort": 3},
+            {"Id": 4, "FromNode": "KBlurXY.001", "FromPort": 1, "ToNode": "Mask.001", "ToPort": 2},
+            {"Id": 5, "FromNode": "Mask.001", "FromPort": 1, "ToNode": "Output.001", "ToPort": 1}
         ]
     }
 }

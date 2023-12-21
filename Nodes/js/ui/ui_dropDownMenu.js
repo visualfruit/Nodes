@@ -52,6 +52,11 @@ class DropDownMenu {
     showSubMenu() {
         this.subMenuContainer.visible = true;
     }
+    showSubMenuRMB(point) {
+        this.subMenuContainer.visible = true;
+        this.subMenuContainer.x = point.x;
+        this.subMenuContainer.y = point.y;
+    }
     hideSubMenu() {
         this.subMenuContainer.visible = false;
     }

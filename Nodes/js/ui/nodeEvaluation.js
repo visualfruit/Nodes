@@ -10,21 +10,25 @@ class Mesh {
         return this.verteces;
     }
 }
+
 class Subdivision {
     constructor(){
-        this.verteces;
+        this.inputVerteces;
         this.outputVerteces;
+        this.iterations;
 
         this.dataChanged = true;
     }
     evaluate(){
-        this.subdivideMesh()
+        this.outputVerteces = this.subdivideMesh(this.inputVerteces, this.iterations);
         return this.outputVerteces;
     }
-    subdivideMesh(){
+    subdivideMesh(inputVerteces, iterations){
         //subdividing algorithm
+        return subdividesVertecesArray;
     }
 }
+
 class DrawShape {
     constructor(){
         this.graphics = new PIXI.Graphics();
@@ -32,20 +36,11 @@ class DrawShape {
         this.dataChanged = true;
     }
     evaluate(){
-        drawShape();
+        this.graphics = Canvas.drawShape();
         return this.graphics;
     }
-    drawShape(verteces, fillColor, strokeColor, strokeThickness, fillAlpha, strokeAlpha){
-        //shape gets drawn
-        this.graphics.clear();
-        this.graphics.beginFill(fillColor, fillAlpha);
-        this.graphics.moveTo(verteces[0].x, verteces[0].y);
-        for (var i=1; i < verteces.length-1; i++){
-            this.graphics.lineTo(verteces[i].x, verteces[i].y);
-        }
-        this.graphics.endFill();
-    }
 }
+
 class KBlurXY {
     constructor(app){
         this.app = app;
@@ -60,14 +55,14 @@ class KBlurXY {
     }
     evaluate(){
         if (dataChanged == true){
-            this.outputBitmap = getBitmapFromGraphics(this.graphics);
+            this.outputBitmap = Canvas.getBitmapFromGraphics(this.graphics);
             return this.outputBitmap;
         }
         else {
             return this.outputBitmap;
         }
     }
-    getBitmapFromGraphics(graphicsObject, blurX, blurY){
+/*     getBitmapFromGraphics(graphicsObject, blurX, blurY){
 
         const blurFilter = new PIXI.filters.BlurFilter();
         blurFilter.quality = this.quality;
@@ -88,30 +83,22 @@ class KBlurXY {
         graphicTexture = app.renderer.generateTexture(graphicsObject, PIXI.SCALE_MODES.NEAREST, 1, graphicBoundaryBox);
         graphicBitmap.texture = graphicTexture;
         return graphicBitmap;       
-    }
+    } */
 }
+
 class Mask {
     constructor(){
         this.dataChanged = true;
+        this.canvas;
+        this.graphic;
+        this.mask;
     }
-    maskGraphicByGraphic(graphic, graphicMask){
-        let texture;
-        const masklayer = new PIXI.Container();
-        const bounds = new PIXI.Rectangle();
-        const focus = new PIXI.Sprite(texture);
-        bounds.width = (graphic.width + graphic.blurAmount) * 2;
-        bounds.height = (graphic.height + graphic.blurAmount) * 2;
-      
-        texture = app.renderer.generateTexture(graphicMask, PIXI.SCALE_MODES.NEAREST, 2, bounds);
-        masklayer.addChild(graphic);
-        //app.stage.addChild(masklayer);
-        canvas.addChild(masklayer);
-        focus.texture = texture;   
-        masklayer.mask = focus;
-        //app.stage.addChild(focus);
-        canvas.addChild(focus);
-      }
+    evaluate(){
+        this.canvas = Canvas.maskGraphicByGraphic(graphic, mask);
+        return this.canvas;
+    }
 }
+
 class Output {
     constructor(){
         this.canvas = null;

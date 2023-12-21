@@ -69,11 +69,10 @@ class ViewControls {
         this.container.scale.set(clampedScale);
 
         if (this.container.scale.x < this.maxScale && this.container.scale.x > this.minScale){
-           // this.container.position.copyFrom(newContainerPosition);*/
             this.container.x = newContainerPosition.x;
             this.container.y = newContainerPosition.y;
-            //console.log("hifort " + this.container.scale.x + "this " + this.maxScale);
         }
+        console.log("posX" + this.container.x);
     }
 
     eventToGlobalPosition(event) {

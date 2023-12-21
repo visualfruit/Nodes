@@ -10,49 +10,94 @@ const app = new PIXI.Application({
   });
 document.body.appendChild(app.view);
 
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+});
+
 //INIT /////////////////////////////////////////
 
-vfUI = new WFUI(app);
+//vfUI = new WFUI(app);
 let vfData = null;
-let uiNodeTemplateArray = [];
-let uiNodeArray = [];
-let nodes = {};
-let connections = [];
+const uiNodeTemplateArray = [];
+const uiNodeArray = [];
+const nodes = {};
+const connections = [];
+
+const undoArray = [];
+const redoArray = [];
+
 const colorPicker = new ColorPicker(app);
-
 const canvas = new PIXI.Container();
-app.stage.addChild(canvas);
-
 const container = new PIXI.Container();
 const containerLinks = new PIXI.Graphics();
 const connectionLine = new PIXI.Graphics();
-container.addChild(containerLinks);
-container.addChild(connectionLine);
 const menuContainer = new PIXI.Container();
 const selRect = new SelectionRectangle(app);
-const menu = new DropDownMenu(app, null);
-menuContainer.addChild(menu.container);
+const dropDowmMenu = new DropDownMenu(app);
+
+console.log("DDM" + DropDownMenu);
+
+app.stage.addChild(canvas);
+container.addChild(containerLinks);
+container.addChild(connectionLine);
+menuContainer.addChild(dropDowmMenu.container);
 app.stage.addChild(container);
 app.stage.addChild(menuContainer);
-
 container.addChild(colorPicker);
 
 const dataControls = new DataControls(app, vfData, uiNodeArray, uiNodeTemplateArray, nodes, container);
 
 dataControls.loadJSON();
-dataControls.loadMenuData(menu);
+dataControls.loadMenuData(dropDowmMenu);
 
-app.uiControls = new UIControls(app, uiNodeArray, connections, uiNodeTemplateArray, container, containerLinks, connectionLine, selRect);
+app.uiControls = new UIControls(app, uiNodeArray, connections, uiNodeTemplateArray, container, containerLinks, connectionLine, selRect, dropDowmMenu);
 const viewControls = new ViewControls(app, container, canvas);
 
 
-/* let onlyOnce = 0;
+const outputNode = nodes;
+const outputCanvas = null;
 
-// Create a render texture
-const renderTexture = PIXI.RenderTexture.create({
-  width: app.renderer.width,
-  height: app.renderer.height,
-}); */
+
+
+
+
+function evaluate(outputNode){
+  if (outputNode.connections.length > 0){
+    // go to next node
+    const connectionNode = outputNode.node.Connections.In[0];
+    // if changes == false > return stored value
+
+    // if changes == true > gather values from weather node values or connection values
+    const numberOfInputValues = ports.In;
+    const nomberOfOutputValues = ports.Out;
+    const allConnectionNodes = [];
+
+
+
+    // if connection values > go to next node and repeat
+
+    // return new value
+
+  }else{
+    console.log("no Output...");
+    return;
+  }
+}
+
+
+
+
+
+const verts = [{"id": 0, "x": 100, "y": 100,"c": "true"},
+              {"id": 1, "x": 2000, "y": 1000,"c": "true"},
+              {"id": 2, "x": 1000, "y": 800,"c": "true"},
+              {"id": 3, "x": 100, "y": 800,"c": "true"}
+              ];
+
+
+const graphicTest = Canvas.drawShape(verts, 0xFF00FF, 0x00ff00, 1, 1, 1);
+graphicTest.blurX = 0;
+graphicTest.blurY = 200;
 
 const blurredSprite = null;
 let gr0 = new PIXI.Graphics();
@@ -67,7 +112,7 @@ gr0.endFill();
 gr0.beginFill(0x08a7f, 0.7);
 gr0.drawCircle(1800, 1500, 800);
 gr0.endFill();
-//canvas.addChild(gr0);
+
 let gr1 = new PIXI.Graphics();
 gr1.blurX = 120;
 gr1.blurY = 0;
@@ -80,11 +125,6 @@ gr1.endFill();
 gr1.beginFill(0x08a7f, 0.5);
 gr1.drawCircle(800, 500, 500);
 gr1.endFill();
-//app.stage.addChild(gr1);
-//canvas.addChild(gr1);
-
-
-//let bitmap = new Bitmap();
 
 let gr2 = new PIXI.Graphics();
 gr2.blurX = 300;
@@ -100,16 +140,25 @@ gr2.lineTo(150,120);
 gr2.lineTo(150,150);
 gr2.endFill();
 
-applyBlurFilterOnGraphic(gr1, gr1.blurX, gr1.blurY);
-applyBlurFilterOnGraphic(gr0, gr0.blurX, gr0.blurY);
-applyBlurFilterOnGraphic(gr2, gr2.blurX, gr2.blurY);
+const blurMask = Canvas.applyBlurFilterOnGraphic(gr0, gr0.blurX, gr0.blurY);
+const blurGraphics1 = Canvas.applyBlurFilterOnGraphic(gr1, gr1.blurX, gr1.blurY);
+const blurGraphics2 = Canvas.applyBlurFilterOnGraphic(gr2, gr2.blurX, gr2.blurY);
+const blurGraphics3 = Canvas.applyBlurFilterOnGraphic(graphicTest, graphicTest.blurX, graphicTest.blurY);
 
-maskGraphicByGraphic(gr1, gr2);
-maskGraphicByGraphic(gr0, gr2);
+const maskedCanvas1 = Canvas.maskGraphicByGraphic(blurGraphics1, blurGraphics2);
+const maskedCanvas2 = Canvas.maskGraphicByGraphic(blurMask, blurGraphics2);
+
+const bitti = Canvas.getBitmapFromGraphicsObject(blurGraphics3);
+
+canvas.addChild(bitti);
+
+canvas.addChild(maskedCanvas1);
+canvas.addChild(maskedCanvas2);
 
 
 
-function applyBlurFilterOnGraphic(graphic, blurX, blurY){
+
+/* function applyBlurFilterOnGraphic(graphic, blurX, blurY){
 
   const blurFilter = new PIXI.filters.BlurFilter();
   blurFilter.quality = 20;
@@ -117,9 +166,9 @@ function applyBlurFilterOnGraphic(graphic, blurX, blurY){
   blurFilter.blurY = blurY;
   graphic.filters = [blurFilter];
   
-}
+} */
 
-function getBitmapFromGraphicsObject(graphicsObject){
+/* function getBitmapFromGraphicsObject(graphicsObject){
   let graphicTexture;
   const graphicBoundaryBox = new PIXI.Rectangle();
   const graphicBitmap = new PIXI.Sprite(graphicTexture);
@@ -131,12 +180,12 @@ function getBitmapFromGraphicsObject(graphicsObject){
   graphicTexture = app.renderer.generateTexture(graphicsObject, PIXI.SCALE_MODES.NEAREST, 1, graphicBoundaryBox);
   graphicBitmap.texture = graphicTexture;
   return graphicBitmap;
-}
+} */
 
-function maskGraphicByGraphic(graphic, graphicMask){
+/* function maskGraphicByGraphic(graphic, graphicMask){
 
-  let graphicBitmap = getBitmapFromGraphicsObject(graphic);
-  let maskBitmap = getBitmapFromGraphicsObject(graphicMask);
+  let graphicBitmap = Canvas.getBitmapFromGraphicsObject(graphic);
+  let maskBitmap = Canvas.getBitmapFromGraphicsObject(graphicMask);
 
   const masklayer = new PIXI.Container();
 
@@ -144,7 +193,7 @@ function maskGraphicByGraphic(graphic, graphicMask){
   canvas.addChild(masklayer);
   masklayer.mask = maskBitmap;
   canvas.addChild(maskBitmap);
-}
+} */
 
 gr1.beginFill(0x54a76b);
 gr1.drawCircle(400, 400, 100);
@@ -158,6 +207,15 @@ gr1.endFill();
 
 
 
+
+
+
+
+
+
+
+  
+      
 
 //applyBlurFilterOnGraphic(gr1, 220);
 //maskGraphicByGraphic(gr1, gr2, 0); */

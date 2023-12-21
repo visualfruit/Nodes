@@ -2,11 +2,15 @@ class LabeledButton {
     constructor(app, x, y, width, height, label) {
         this.container = new PIXI.Container();
         this.container.position.set(x, y);
+        this.width = width;
+        this.height = height;
+
+        this.color = 0xeeeeee;
         //app.stage.addChild(this.container);
 
         this.background = new PIXI.Graphics();
-        this.background.beginFill(0xeeeeee);
-        this.background.drawRect(0, 0, width, height);
+        this.background.beginFill(this.color);
+        this.background.drawRect(0, 0, this.width, this.height);
         this.background.endFill();
         this.container.addChild(this.background);
 
@@ -25,6 +29,16 @@ class LabeledButton {
         this.container.on('pointerout', () => {
             this.container.alpha = 1;
         });
+    }
+    changeColor(color){
+        this.color = color;
+        this.background.clear();
+        this.background.beginFill(color);
+        this.background.drawRect(0, 0, this.width, this.height);
+        this.background.endFill();
+    }
+    setInactive(){
+        this.background.clear();
     }
 }
 
@@ -65,6 +79,11 @@ class CircularButton extends PIXI.Container{
     onPointerDown() {
         console.log('Button clicked: ' + this.name);
     }
+    addOutline(){
+        this.button.lineStyle(1, 0x000000);
+        this.button.drawCircle(0, 0, this.radius);
+        this.button.endFill();        
+    }
 }
 
 
@@ -97,6 +116,10 @@ class Checkbox {
         this.container.on('pointerout', () => {
             this.container.alpha = 1;
         });
+    }
+
+    setToggle(bool){
+        this.tick.visible = bool;
     }
 
     toggleCheckbox() {
@@ -304,10 +327,10 @@ class Box extends PIXI.Container {
         this.container.alpha = 1;
     }
 */
-    drawBackground(height, color) {
+    drawBackground(height, color, lineThickness) {
         //this.height = height;
         this.background.clear();
-        this.background.lineStyle(1, color);
+        this.background.lineStyle(lineThickness, color);
         this.background.drawRect(0, 0, this.width, height);
         this.background.endFill();
     }
