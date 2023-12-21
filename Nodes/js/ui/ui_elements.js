@@ -91,6 +91,12 @@ class Checkbox {
         this.container.interactive = true;
         this.container.buttonMode = true;
         this.container.on('pointerdown', this.toggleCheckbox.bind(this));
+        this.container.on('pointerover', () => {
+            this.container.alpha = .8;
+        });
+        this.container.on('pointerout', () => {
+            this.container.alpha = 1;
+        });
     }
 
     toggleCheckbox() {
@@ -140,6 +146,12 @@ class Slider {
         this.container.interactive = true;
         this.container.buttonMode = true;
         this.container.on('pointerdown', this.onSliderDown.bind(this));
+        this.container.on('pointerover', () => {
+            this.container.alpha = .8;
+        });
+        this.container.on('pointerout', () => {
+            this.container.alpha = 1;
+        });
         this.onSliderMove = this.onSliderMove.bind(this);
         this.onSliderUp = this.onSliderUp.bind(this);
 

@@ -5,6 +5,6 @@ class TreeEvaluation extends PIXI.Container {
     }
 
     startRootEvaluation(){
-        this.startnode.evaluate();
+        this.startNode.evaluate();
     }
 }

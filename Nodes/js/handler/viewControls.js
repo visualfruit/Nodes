@@ -67,14 +67,13 @@ class ViewControls {
         newContainerPosition.y -= containerPointerPosition.y * delta;
 
         this.container.scale.set(clampedScale);
+
         if (this.container.scale.x < this.maxScale && this.container.scale.x > this.minScale){
-           // this.container.position.copyFrom(newContainerPosition);
+           // this.container.position.copyFrom(newContainerPosition);*/
             this.container.x = newContainerPosition.x;
             this.container.y = newContainerPosition.y;
             //console.log("hifort " + this.container.scale.x + "this " + this.maxScale);
         }
-
-        //console.log("containerView: Scale: " + this.container.scale.x + " x: " + this.container.position.x + " y: " + this.container.position.y);
     }
 
     eventToGlobalPosition(event) {
@@ -83,8 +82,10 @@ class ViewControls {
     }
 
     toggleNodeVisibility(event) {
+        //if (event.key === "Tab") {
         if (event.key === "Tab") {
             event.preventDefault();
+            document.body.focus();
             this.containerA.visible = !this.containerA.visible;
             this.toggleContainer();
         }
