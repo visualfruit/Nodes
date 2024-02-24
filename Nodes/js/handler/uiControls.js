@@ -170,22 +170,11 @@ class UIControls {
         this.moveHandler();
     }
 
-
-    // Connection Handling
-
-/*     connectionHandler() {
-        this.hitObject.on('pointerdown', this.onPortButtonDown.bind(this));
-
-
-    } */
-
     connectionOutputHandler(event) {
         if (!this.isDragging) {
             this.isDragging = true;
-            console.log(this.isDragging);
             this.hitObject.on("pointermove", this.onPortMouseMoveBind);
             this.app.renderer.plugins.interaction.on('pointerup', this.onPortButtonUp.bind(this));
-            //this.connectionLine.clear();
         }
     }
 
@@ -222,10 +211,8 @@ class UIControls {
 
         const pa = new PIXI.Point(this.hitObject.parent.parent.x, this.hitObject.parent.parent.y);
         const pb = new PIXI.Point(this.hitObject.parent.x, this.hitObject.parent.y);
-        
         const pointPort = new PIXI.Point(pa.x + pb.x, pa.y + pb.y);
 
-        //const point1 = new PIXI.Point(this.hitObject.parent.x + this.hitObject.parent.parent.x, this.hitObject.parent.y + this.hitObject.parent.parent.y);
         this.drawNewConnectionLine(pointPort, this.newPointerPos);
         }
     }

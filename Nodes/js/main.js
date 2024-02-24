@@ -35,8 +35,6 @@ const menuContainer = new PIXI.Container();
 const selRect = new SelectionRectangle(app);
 const dropDowmMenu = new DropDownMenu(app);
 
-console.log("DDM" + DropDownMenu);
-
 app.stage.addChild(canvas);
 container.addChild(containerLinks);
 container.addChild(connectionLine);

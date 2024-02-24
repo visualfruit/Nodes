@@ -60,12 +60,15 @@ class ViewControls {
         const clampedScale = Math.max(this.minScale, Math.min(this.maxScale, currentScale));
 
         const containerPointerPosition = pointerPosition.clone();
-        this.container.toLocal(containerPointerPosition, null, containerPointerPosition);
+
+        //if (this.container.scale.x < this.maxScale && this.container.scale.x > this.minScale){
+            this.container.toLocal(containerPointerPosition, null, containerPointerPosition);
+        //}
 
         const newContainerPosition = this.container.position.clone();
         newContainerPosition.x -= containerPointerPosition.x * delta;
         newContainerPosition.y -= containerPointerPosition.y * delta;
-
+    
         this.container.scale.set(clampedScale);
 
         if (this.container.scale.x < this.maxScale && this.container.scale.x > this.minScale){
