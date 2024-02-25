@@ -51,7 +51,7 @@ class Subdivision {
     constructor(){
         this.inputVerteces;
         this.outputVerteces;
-        this.iterations;
+        this.iterations = 0;
 
         this.dataChanged = true;
     }
@@ -68,12 +68,18 @@ class Subdivision {
 class DrawShape {
     constructor(){
         this.graphics = new PIXI.Graphics();
+        this.verteces = null;
 
         this.dataChanged = true;
     }
     evaluate(){
-        this.graphics = Canvas.drawShape();
+        this.graphics = this.drawShape();
         return this.graphics;
+    }
+    drawShape(){
+        if (verteces = !null){
+            console.log("Draw shapes from verteces reference");
+        }
     }
 }
 
@@ -90,13 +96,10 @@ class KBlurXY {
         this.dataChanged = true;
     }
     evaluate(){
-        if (dataChanged == true){
+        if (dataChanged){
             this.outputBitmap = Canvas.getBitmapFromGraphics(this.graphics);
-            return this.outputBitmap;
         }
-        else {
-            return this.outputBitmap;
-        }
+        return this.outputBitmap;
     }
 /*     getBitmapFromGraphics(graphicsObject, blurX, blurY){
 
