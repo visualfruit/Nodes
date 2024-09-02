@@ -22,6 +22,19 @@ class LabeledButton {
         this.container.buttonMode = true;
         this.container.on('pointerdown', () => {
             console.log('Button clicked');
+
+            if(this.colorPicker) {
+                this.colorPicker.destroy({ children: true });
+                this.colorPicker = null;
+            } else {
+                this.colorPicker = new PIXI.Graphics();
+                this.colorPicker.beginFill(0x30302F);
+                this.colorPicker.drawRoundedRect(this.width + 20 , 0, 250, 300, 5);
+                this.colorPicker.endFill();
+                this.container.addChild(this.colorPicker);
+            }
+
+
         });
         this.container.on('pointerover', () => {
             this.container.alpha = .8;
@@ -376,7 +389,7 @@ class Nodeport extends PIXI.Container {
     }
     setColor(){
         switch(this.label){
-            case "Verteces":
+            case "Vertices":
                 this.buttonColor = 0xAAFFCC;
             break;
             case "Mask":

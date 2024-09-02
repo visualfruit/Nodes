@@ -36,39 +36,39 @@ class NodeTypes {
 
 class Mesh {
     constructor() {
-        this.verteces = [];
+        this.vertices = [];
         this.edges = [];
         this.vertexGroups = [];
 
         this.dataChanged = true;
     }
     evaluate(){
-        console.log(this.verteces, this.edges);
+        console.log(this.vertices, this.edges);
     }
 }
 
 class Subdivision {
     constructor(){
-        this.inputVerteces;
-        this.outputVerteces;
+        this.inputVertices;
+        this.outputVertices;
         this.iterations = 0;
 
         this.dataChanged = true;
     }
     evaluate(){
-        this.outputVerteces = this.subdivideMesh(this.inputVerteces, this.iterations);
-        return this.outputVerteces;
+        this.outputVertices = this.subdivideMesh(this.inputVertices, this.iterations);
+        return this.outputVertices;
     }
-    subdivideMesh(inputVerteces, iterations){
+    subdivideMesh(inputVertices, iterations){
         //subdividing algorithm
-        return subdividesVertecesArray;
+        return subdividesVerticesArray;
     }
 }
 
 class DrawShape {
     constructor(){
         this.graphics = new PIXI.Graphics();
-        this.verteces = null;
+        this.vertices = null;
 
         this.dataChanged = true;
     }
@@ -77,9 +77,7 @@ class DrawShape {
         return this.graphics;
     }
     drawShape(){
-        if (verteces = !null){
-            console.log("Draw shapes from verteces reference");
-        }
+        console.log("Draw shapes from vertices reference");
     }
 }
 
