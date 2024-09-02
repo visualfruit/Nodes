@@ -256,7 +256,7 @@ class Box extends PIXI.Container {
 
         this.header = new PIXI.Graphics();
 
-        this.header.beginFill(0xAA79FE);
+        this.header.beginFill(0x1D1D1D);
 
         const offset = 1;
         const hwidthX = this.widthX;
@@ -290,7 +290,7 @@ class Box extends PIXI.Container {
         this.headerButton.on('pointerupoutside', this.onPointerUp.bind(this));
         this.headerButton.on('pointermove', this.onPointerMove.bind(this));
  */        
-        this.titleText = new PIXI.Text(title, { fontSize: 16, fill: 0xffffff });
+        this.titleText = new PIXI.Text(title, { fontSize: 16, fill: 0xE6E6E6 });
         this.titleText.position.set(10, 3);
         this.header.addChild(this.titleText);
 
