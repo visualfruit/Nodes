@@ -53,12 +53,12 @@ class NodeBox extends PIXI.Container {
                 //this.#checkBoxListItem("Closed", "Boolean", true);
                 break;
             case "DrawShape":
-                this.heightY = 8 * this.spacingY;
+                this.heightY = 8.2 * this.spacingY;
                 this.drawBox();
                 this.#outputListItem("Canvas", "Canvas");
                 this.#inputListItem("Vertices", "Vertices");
-                this.#colourListItem("Fill Colour", "Colour", this.node.FillColor);
-                this.#colourListItem("Stroke Colour", "Colour", this.node.StrokeColor);
+                this.#colourListItem("Fill Color", "Color", this.node.FillColor);
+                this.#colourListItem("Stroke Color", "Color", this.node.StrokeColor);
                 this.#sliderLimListItem("Stroke Thickness", "Int", 0, 100, this.node.StrokeThickness);
                 this.#sliderLimListItem("Fill Alpha", "Int", 0, 1, this.node.FillAlpha);
                 this.#sliderLimListItem("Stroke Alpha", "Int", 0, 100, 50);
@@ -88,15 +88,15 @@ class NodeBox extends PIXI.Container {
             case "Subdivision":
                 this.heightY = 4 * this.spacingY;
                 this.drawBox();
-                this.#outputListItem("Verteces", "Verteces");
-                this.#inputListItem("Verteces", "Verteces");
+                this.#outputListItem("Vertices", "Vertices");
+                this.#inputListItem("Vertices", "Vertices");
                 this.#sliderLimListItem("Iterations", "Int", 0, 5, this.node.Iterations);
                 break;
             case "slider8":
                 this.#slider8ListItem("Unlimited", "Int", 59, true);
                 break;
-            case "colour":
-                this.#colourListItem("Colour", "Colour", "#FF0000");
+            case "color":
+                this.#colourListItem("Color", "Color", "#FF0000");
                 break;
             case "Output":
                 this.heightY = 2 * this.spacingY;
@@ -144,7 +144,7 @@ class NodeBox extends PIXI.Container {
         checkBox.setToggle(bool);
         this.addChild(checkBox.container);
 
-        const checkBoxText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const checkBoxText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         checkBoxText.position.set(15, this.itemIndex*this.spacingY + 4);
         this.addChild(checkBoxText);
 
