@@ -17,7 +17,7 @@ class NodeBox extends PIXI.Container {
         this.ports = [];
 
         //Change Evaluation
-        this.changesToPath = true;
+        //this.changesToPath = true;
 
         //Layout
         //this.container = null;
@@ -37,11 +37,11 @@ class NodeBox extends PIXI.Container {
     }
 
     drawBoxSelected(){
-        this.nodeBox.drawBackground(this.heightY, 0x00FFFF, 5);
+        this.nodeBox.drawBackground(this.heightY, 0xffffff, 1);
     }
 
     drawBox(){
-        this.nodeBox.drawBackground(this.heightY, 0xEEEEEE, 1);
+        this.nodeBox.drawBackground(this.heightY, 0x000000, 1);
     }
 
     #createListItems(type){
@@ -49,14 +49,14 @@ class NodeBox extends PIXI.Container {
             case "Mesh":
                 this.heightY = 2 * this.spacingY;
                 this.drawBox();
-                this.#outputListItem("Verteces", "Verteces");
+                this.#outputListItem("Vertices", "Vertices");
                 //this.#checkBoxListItem("Closed", "Boolean", true);
                 break;
             case "DrawShape":
                 this.heightY = 8 * this.spacingY;
                 this.drawBox();
                 this.#outputListItem("Canvas", "Canvas");
-                this.#inputListItem("Verteces", "Verteces");
+                this.#inputListItem("Vertices", "Vertices");
                 this.#colourListItem("Fill Colour", "Colour", this.node.FillColor);
                 this.#colourListItem("Stroke Colour", "Colour", this.node.StrokeColor);
                 this.#sliderLimListItem("Stroke Thickness", "Int", 0, 100, this.node.StrokeThickness);
@@ -113,7 +113,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const labelText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const labelText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         labelText.position.set(15, this.itemIndex*this.spacingY + 4);
         this.addChild(labelText);
 
@@ -126,7 +126,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const labelText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const labelText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         labelText.anchor.set(1, 0);
         labelText.position.set(this.width- 25, this.itemIndex*this.spacingY + 4);
         this.addChild(labelText);
@@ -183,6 +183,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(colourButton.container);
         this.itemIndex +=1;             
     }
+    /*
     #colourOutputListItem(label, dataType, value){
         let port = new Nodeport(this.app, label, dataType, "Input", this.itemIndex);
         port.x = this.width;
@@ -195,4 +196,5 @@ class NodeBox extends PIXI.Container {
         this.addChild(colourItem);   
         this.itemIndex +=1;
     }
+    */
 }

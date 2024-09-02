@@ -17,8 +17,8 @@ class ColorPicker extends PIXI.Container {
         this.colorPickerBox.headerButton.name = "ColorPicker";
         this.colorPickerBox.drawBackground(600, 0xFFFFFF); */
         this.box = new PIXI.Graphics();
-        this.box.lineStyle(1, 0xFFFFFF);
-        this.box.drawRect(0, 0, 300, 455);
+        this.box.lineStyle(1, 0x000000);
+        this.box.drawRoundedRect(0, 0, 300, 455, 5);
         this.box.endFill();
         this.addChild(this.box);
 
