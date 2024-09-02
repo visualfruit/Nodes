@@ -57,8 +57,8 @@ class NodeBox extends PIXI.Container {
                 this.drawBox();
                 this.#outputListItem("Canvas", "Canvas");
                 this.#inputListItem("Vertices", "Vertices");
-                this.#colourListItem("Fill Color", "Color", this.node.FillColor);
-                this.#colourListItem("Stroke Color", "Color", this.node.StrokeColor);
+                this.#colorListItem("Fill Color", "Color", this.node.FillColor);
+                this.#colorListItem("Stroke Color", "Color", this.node.StrokeColor);
                 this.#sliderLimListItem("Stroke Thickness", "Int", 0, 100, this.node.StrokeThickness);
                 this.#sliderLimListItem("Fill Alpha", "Int", 0, 1, this.node.FillAlpha);
                 this.#sliderLimListItem("Stroke Alpha", "Int", 0, 100, 50);
@@ -96,7 +96,7 @@ class NodeBox extends PIXI.Container {
                 this.#slider8ListItem("Unlimited", "Int", 59, true);
                 break;
             case "color":
-                this.#colourListItem("Color", "Color", "#FF0000");
+                this.#colorListItem("Color", "Color", "#FF0000");
                 break;
             case "Output":
                 this.heightY = 2 * this.spacingY;
@@ -171,7 +171,7 @@ class NodeBox extends PIXI.Container {
 
         this.itemIndex +=1;
     }
-    #colourListItem(label, dataType, color){
+    #colorListItem(label, dataType, color){
         let port = new Nodeport(this.app, label, dataType, "Input", this.itemIndex);
         port.x = 0;
         port.y = this.itemIndex*this.spacingY + 15;

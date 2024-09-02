@@ -15,7 +15,7 @@ class LabeledButton {
         this.container.addChild(this.background);
 
         this.text = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
-        this.text.position.set(width * 0.5 - this.text.width * 0.5, height * 0.5 - this.text.height * 0.5);
+        this.text.position.set(0, height * 0.5 - this.text.height * 0.5);
         this.container.addChild(this.text);
 
         this.container.interactive = true;
@@ -34,7 +34,7 @@ class LabeledButton {
         this.color = color;
         this.background.clear();
         this.background.beginFill(color);
-        this.background.drawRoundedRect(0, 0, this.width, this.height, 5);
+        this.background.drawRoundedRect(100, 0, this.width -100, this.height, 5);
         this.background.endFill();
     }
     setInactive(){
@@ -155,14 +155,14 @@ class Slider {
             fontSize: 14,
             fill: 0xffffff
         });
-        this.label.position.set(5, 5);
+        this.label.position.set(5, 2);
         this.background.addChild(this.label);
 
         this.valueText = new PIXI.Text(this.value, {
             fontSize: 14,
             fill: 0xffffff
         });
-        this.valueText.position.set(width - 5, 5);
+        this.valueText.position.set(width - 5, 2);
         this.valueText.anchor.set(1, 0);
         this.background.addChild(this.valueText);
 
@@ -360,10 +360,6 @@ class Box extends PIXI.Container {
 }
 
 
-
-
-///////////////////////////////////
-
 class Nodeport extends PIXI.Container {
     constructor(app, label, dataType, name, index){
         super();
@@ -375,12 +371,8 @@ class Nodeport extends PIXI.Container {
         this.hoverColor = 0xFF0000;
         this.buttonColor = 0xEEEEEE;
         this.setColor();
-        
-        //this.button.name = "nodeport";
-        this.button = new CircularButton(app, 0, 0, 8, this.buttonColor, this.hoverColor, this.name);
+        this.button = new CircularButton(app, 0, 0, 6, this.buttonColor, this.hoverColor, this.name);
         this.addChild(this.button);
-     
-        //this.color = this.buttonColor;
     }
     setColor(){
         switch(this.label){
