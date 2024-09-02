@@ -37,9 +37,9 @@ class LabeledButton {
         this.background.drawRoundedRect(0, 0, this.width, this.height, 5);
         this.background.endFill();
     }
-    /* setInactive(){
+    setInactive(){
         this.background.clear();
-    } */
+    }
 }
 
 class CircularButton extends PIXI.Container{
@@ -60,8 +60,8 @@ class CircularButton extends PIXI.Container{
         this.button.endFill();
         this.addChild(this.button);
 
-        //this.interactive = true;
-        //this.buttonMode = true;
+        this.interactive = true;
+        this.buttonMode = true;
 
         this.on('pointerover', this.onPointerOver.bind(this));
         this.on('pointerout', this.onPointerOut.bind(this));
@@ -285,10 +285,10 @@ class Box extends PIXI.Container {
         this.header.addChild(this.titleText);
 
         this.isDragging = false;
-        //this.pointerData = null;
+        this.pointerData = null;
         this.initialPointerPos = { x: 0, y: 0 };
-        //this.pointerStartPos = new PIXI.Point();
-        //this.containerStartPos = new PIXI.Point();
+        this.pointerStartPos = new PIXI.Point();
+        this.containerStartPos = new PIXI.Point();
     }
 /*
     onPointerDown(event) {
@@ -371,7 +371,7 @@ class Nodeport extends PIXI.Container {
         this.name = name;
         this.index = index;
         this.dataType = dataType;
-        //this.multiple = false;
+        this.multiple = false;
         this.hoverColor = 0xFF0000;
         this.buttonColor = 0xEEEEEE;
         this.setColor();
