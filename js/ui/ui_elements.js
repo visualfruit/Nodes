@@ -65,8 +65,9 @@ class CircularButton extends PIXI.Container{
         this.hoverColor = hoverColor;
 
         this.button = new PIXI.Graphics();
-        this.button.lineStyle(1, this.defaultColor);
+        this.button.beginFill(this.defaultColor);
         this.button.drawCircle(0, 0, this.radius);
+        this.button.endFill();
         this.addChild(this.button);
 
         this.interactive = true;
@@ -78,17 +79,20 @@ class CircularButton extends PIXI.Container{
     }
 
     onPointerOver() {
-        this.button.lineStyle(1, this.hoverColor);
+        this.button.tint = this.hoverColor;
     }
 
     onPointerOut() {
-        this.button.lineStyle(1, this.defaultColor);
+        this.button.tint = this.defaultColor;
     }
 
     onPointerDown() {
         console.log('Button clicked: ' + this.name);
     }
     addOutline(){
+        this.button.lineStyle(1, 0x000000);
+        this.button.drawCircle(0, 0, this.radius);
+        this.button.endFill();        
     }
 }
 

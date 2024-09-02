@@ -178,22 +178,22 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const colourButton = new LabeledButton(this.app, 15, this.itemIndex*this.spacingY, 175, 25, label);
-        colourButton.changeColor(color);
-        this.addChild(colourButton.container);
+        const colorButton = new LabeledButton(this.app, 15, this.itemIndex*this.spacingY, 175, 25, label);
+        colorButton.changeColor(color);
+        this.addChild(colorButton.container);
         this.itemIndex +=1;             
     }
     /*
-    #colourOutputListItem(label, dataType, value){
+    #colorOutputListItem(label, dataType, value){
         let port = new Nodeport(this.app, label, dataType, "Input", this.itemIndex);
         port.x = this.width;
         port.y = this.itemIndex*this.spacingY + 15;
         this.addChild(port);
         this.ports.push(port);
-        let colourItem = new Colourfield(label, value);
-        colourItem.x = 10;
-        colourItem.y = this.itemIndex*this.spacingY;
-        this.addChild(colourItem);   
+        let colorItem = new colorfield(label, value);
+        colorItem.x = 10;
+        colorItem.y = this.itemIndex*this.spacingY;
+        this.addChild(colorItem);
         this.itemIndex +=1;
     }
     */
