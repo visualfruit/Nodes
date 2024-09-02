@@ -5,8 +5,7 @@ class LabeledButton {
         this.width = width;
         this.height = height;
 
-        this.color = 0xeeeeee;
-        //app.stage.addChild(this.container);
+        this.color = 0x545454;
 
         this.background = new PIXI.Graphics();
         this.background.beginFill(this.color);
@@ -15,7 +14,7 @@ class LabeledButton {
         this.container.addChild(this.background);
 
         this.text = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
-        this.text.position.set(0, height * 0.5 - this.text.height * 0.5);
+        this.text.position.set(5, height * 0.5 - this.text.height * 0.5 + 1);
         this.container.addChild(this.text);
 
         this.container.interactive = true;
@@ -27,11 +26,10 @@ class LabeledButton {
                 this.colorPicker.destroy({ children: true });
                 this.colorPicker = null;
             } else {
-                this.colorPicker = new PIXI.Graphics();
-                this.colorPicker.beginFill(0x30302F);
-                this.colorPicker.drawRoundedRect(this.width + 20 , 0, 250, 300, 5);
-                this.colorPicker.endFill();
+                this.colorPicker = new ColorPicker(app);
+                this.colorPicker.position.set(200, 0);
                 this.container.addChild(this.colorPicker);
+
             }
 
 
@@ -61,16 +59,14 @@ class CircularButton extends PIXI.Container{
         this.app = app;
         this.name = name;
         this.position.set(x, y);
-        //this.app.stage.addChild(this.container);
 
         this.radius = radius;
         this.defaultColor = defaultColor;
         this.hoverColor = hoverColor;
 
         this.button = new PIXI.Graphics();
-        this.button.beginFill(this.defaultColor);
+        this.button.lineStyle(1, this.defaultColor);
         this.button.drawCircle(0, 0, this.radius);
-        this.button.endFill();
         this.addChild(this.button);
 
         this.interactive = true;
@@ -82,20 +78,17 @@ class CircularButton extends PIXI.Container{
     }
 
     onPointerOver() {
-        this.button.tint = this.hoverColor;
+        this.button.lineStyle(1, this.hoverColor);
     }
 
     onPointerOut() {
-        this.button.tint = this.defaultColor;
+        this.button.lineStyle(1, this.defaultColor);
     }
 
     onPointerDown() {
         console.log('Button clicked: ' + this.name);
     }
     addOutline(){
-        this.button.lineStyle(1, 0x000000);
-        this.button.drawCircle(0, 0, this.radius);
-        this.button.endFill();        
     }
 }
 

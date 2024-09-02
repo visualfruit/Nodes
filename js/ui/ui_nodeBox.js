@@ -140,7 +140,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const checkBox = new Checkbox(this.app, 170, this.itemIndex*this.spacingY+5, label);
+        const checkBox = new Checkbox(this.app, 170, this.itemIndex*this.spacingY + 4, label);
         checkBox.setToggle(bool);
         this.addChild(checkBox.container);
 
