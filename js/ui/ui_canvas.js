@@ -1,11 +1,11 @@
 class Canvas {
 
-    static drawShape(verteces, fillColor, strokeColor, strokeThickness, fillAlpha, strokeAlpha){
+    static drawShape(vertices, fillColor, strokeColor, strokeThickness, fillAlpha, strokeAlpha){
         const graphics = new PIXI.Graphics();
         graphics.beginFill(fillColor, fillAlpha);
-        graphics.moveTo(verteces[0].x, verteces[0].y);
-        for (var i=1; i < verteces.length; i++){
-            graphics.lineTo(verteces[i].x, verteces[i].y);
+        graphics.moveTo(vertices[0].x, vertices[0].y);
+        for (var i=1; i < vertices.length; i++){
+            graphics.lineTo(vertices[i].x, vertices[i].y);
         }
         graphics.endFill();
         return graphics;

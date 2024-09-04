@@ -5,23 +5,34 @@ class LabeledButton {
         this.width = width;
         this.height = height;
 
-        this.color = 0xeeeeee;
-        //app.stage.addChild(this.container);
+        this.color = 0x545454;
 
         this.background = new PIXI.Graphics();
         this.background.beginFill(this.color);
-        this.background.drawRect(0, 0, this.width, this.height);
+        this.background.drawRoundedRect(0, 0, this.width, this.height, 5);
         this.background.endFill();
         this.container.addChild(this.background);
 
-        this.text = new PIXI.Text(label, { fontSize: 14, fill: 0x000000 });
-        this.text.position.set(width * 0.5 - this.text.width * 0.5, height * 0.5 - this.text.height * 0.5);
+        this.text = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
+        this.text.position.set(5, height * 0.5 - this.text.height * 0.5 + 1);
         this.container.addChild(this.text);
 
         this.container.interactive = true;
         this.container.buttonMode = true;
         this.container.on('pointerdown', () => {
             console.log('Button clicked');
+
+            if(this.colorPicker) {
+                this.colorPicker.destroy({ children: true });
+                this.colorPicker = null;
+            } else {
+                this.colorPicker = new ColorPicker(app);
+                this.colorPicker.position.set(200, 0);
+                this.container.addChild(this.colorPicker);
+
+            }
+
+
         });
         this.container.on('pointerover', () => {
             this.container.alpha = .8;
@@ -34,7 +45,7 @@ class LabeledButton {
         this.color = color;
         this.background.clear();
         this.background.beginFill(color);
-        this.background.drawRect(0, 0, this.width, this.height);
+        this.background.drawRoundedRect(100, 0, this.width -100, this.height, 5);
         this.background.endFill();
     }
     setInactive(){
@@ -48,7 +59,6 @@ class CircularButton extends PIXI.Container{
         this.app = app;
         this.name = name;
         this.position.set(x, y);
-        //this.app.stage.addChild(this.container);
 
         this.radius = radius;
         this.defaultColor = defaultColor;
@@ -95,7 +105,7 @@ class Checkbox {
 
         this.background = new PIXI.Graphics();
         this.background.beginFill(0xeeeeee);
-        this.background.drawRect(0, 0, 20, 20);
+        this.background.drawRoundedRect(0, 0, 20, 20, 5);
         this.background.endFill();
         this.container.addChild(this.background);
 
@@ -140,8 +150,8 @@ class Slider {
         this.width = width;
 
         this.background = new PIXI.Graphics();
-        this.background.beginFill(0xeeeeee);
-        this.background.drawRect(0, 0, width, 25);
+        this.background.beginFill(0x545454);
+        this.background.drawRoundedRect(0, 0, width, 25, 5);
         this.background.endFill();
         this.container.addChild(this.background);
 
@@ -153,16 +163,16 @@ class Slider {
 
         this.label = new PIXI.Text(label, {
             fontSize: 14,
-            fill: 0x000000
+            fill: 0xffffff
         });
-        this.label.position.set(5, 5);
+        this.label.position.set(5, 2);
         this.background.addChild(this.label);
 
         this.valueText = new PIXI.Text(this.value, {
             fontSize: 14,
-            fill: 0x000000
+            fill: 0xffffff
         });
-        this.valueText.position.set(width - 5, 5);
+        this.valueText.position.set(width - 5, 2);
         this.valueText.anchor.set(1, 0);
         this.background.addChild(this.valueText);
 
@@ -206,7 +216,7 @@ class Slider {
 
         this.handle.clear();
         this.handle.beginFill(this.handleColor);
-        this.handle.drawRect(0, 0, clampedX, 25);
+        this.handle.drawRoundedRect(0, 0, clampedX, 25, 5);
         this.handle.endFill();
 
         this.valueText.text = value.toString();
@@ -218,7 +228,7 @@ class Slider {
 
         this.handle.clear();
         this.handle.beginFill(this.handleColor);
-        this.handle.drawRect(0, 0, clampedX, 25);
+        this.handle.drawRoundedRect(0, 0, clampedX, 25, 5);
         this.handle.endFill();
 
         this.valueText.text = value;
@@ -231,8 +241,6 @@ class Box extends PIXI.Container {
         super();
         this.app = app;
 
-        //this.container = new PIXI.Container();
-        //this.container.position.set(x, y);
         this.widthX = width;
         this.heightY = height;
 
@@ -247,17 +255,42 @@ class Box extends PIXI.Container {
         this.addChild(this.headerButton);
 
         this.header = new PIXI.Graphics();
-        this.header.beginFill(0xeeeeee);
-        this.header.drawRect(0, 0, this.widthX, 30);
+
+        this.header.beginFill(0x1D1D1D);
+
+        const offset = 1;
+        const hwidthX = this.widthX;
+        const hheight = 30;
+        const hradius = 4;
+        this.header.moveTo(offset, hradius + offset);
+        this.header.quadraticCurveTo(offset, offset, offset + hradius, offset);
+
+        this.header.lineTo(hwidthX - hradius - offset , offset);
+        this.header.quadraticCurveTo(hwidthX - offset, offset, hwidthX - offset, hradius + offset);
+        this.header.lineTo(hwidthX - offset, hheight);
+        this.header.lineTo(offset, hheight);
+        this.header.lineTo(offset, hradius + offset);
         this.header.endFill();
+
+        const margin = 1;
+        const marginGraphics = new PIXI.Graphics();
+        marginGraphics.beginFill(0xFFFFFF, 0);
+        marginGraphics.drawRect(hwidthX, 0, margin, hheight);
+        marginGraphics.endFill();
+
         this.headerButton.addChild(this.header);
+        this.headerButton.addChild(marginGraphics);
+
+
+        this.headerButton.addChild(this.header);
+
 /* 
         this.headerButton.on('pointerdown', this.onPointerDown.bind(this));
         this.headerButton.on('pointerup', this.onPointerUp.bind(this));
         this.headerButton.on('pointerupoutside', this.onPointerUp.bind(this));
         this.headerButton.on('pointermove', this.onPointerMove.bind(this));
  */        
-        this.titleText = new PIXI.Text(title, { fontSize: 16, fill: 0x000000 });
+        this.titleText = new PIXI.Text(title, { fontSize: 16, fill: 0xE6E6E6 });
         this.titleText.position.set(10, 3);
         this.header.addChild(this.titleText);
 
@@ -328,18 +361,14 @@ class Box extends PIXI.Container {
     }
 */
     drawBackground(height, color, lineThickness) {
-        //this.height = height;
         this.background.clear();
         this.background.lineStyle(lineThickness, color);
-        this.background.drawRect(0, 0, this.width, height);
+        this.background.beginFill(0x30302F);
+        this.background.drawRoundedRect(0, 0, this.width, height, 5);
         this.background.endFill();
     }
 }
 
-
-
-
-///////////////////////////////////
 
 class Nodeport extends PIXI.Container {
     constructor(app, label, dataType, name, index){
@@ -352,16 +381,12 @@ class Nodeport extends PIXI.Container {
         this.hoverColor = 0xFF0000;
         this.buttonColor = 0xEEEEEE;
         this.setColor();
-        
-        //this.button.name = "nodeport";
-        this.button = new CircularButton(app, 0, 0, 8, this.buttonColor, this.hoverColor, this.name);
+        this.button = new CircularButton(app, 0, 0, 6, this.buttonColor, this.hoverColor, this.name);
         this.addChild(this.button);
-     
-        //this.color = this.buttonColor;
     }
     setColor(){
         switch(this.label){
-            case "Verteces":
+            case "Vertices":
                 this.buttonColor = 0xAAFFCC;
             break;
             case "Mask":

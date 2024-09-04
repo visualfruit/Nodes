@@ -28,7 +28,6 @@ const connections = [];
 const undoArray = [];
 const redoArray = [];
 
-const colorPicker = new ColorPicker(app);
 const canvas = new PIXI.Container();
 const container = new PIXI.Container();
 const containerLinks = new PIXI.Graphics();
@@ -43,7 +42,6 @@ container.addChild(connectionLine);
 menuContainer.addChild(dropDowmMenu.container);
 app.stage.addChild(container);
 app.stage.addChild(menuContainer);
-container.addChild(colorPicker);
 
 const dataControls = new DataControls(app, vfData, uiNodeArray, uiNodeTemplateArray, nodes, container);
 

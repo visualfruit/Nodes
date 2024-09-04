@@ -12,13 +12,10 @@ class ColorPicker extends PIXI.Container {
         this.lightness = 0;
         this.alpha = 1;
 
-
-/*         this.colorPickerBox = new Box(this.app, 0, 0, 300, 600, "Color Picker");
-        this.colorPickerBox.headerButton.name = "ColorPicker";
-        this.colorPickerBox.drawBackground(600, 0xFFFFFF); */
         this.box = new PIXI.Graphics();
-        this.box.lineStyle(1, 0xFFFFFF);
-        this.box.drawRect(0, 0, 300, 455);
+        this.box.lineStyle(1, 0x000000);
+        this.box.beginFill(0x30302F);
+        this.box.drawRoundedRect(0, 0, 300, 455, 5);
         this.box.endFill();
         this.addChild(this.box);
 
@@ -26,19 +23,17 @@ class ColorPicker extends PIXI.Container {
         this.y = 400;
         this.visibility = true;
 
-
-
         this.radius = 140;
         this.centerX = 0;
         this.centerY = 0;
 
-        this.colorWheelButton = new CircularButton(this.app, 0, 0, 5, 0xFFFFFF, 0xFF0000, "colorWheelButton");
+        this.colorWheelButton = new CircularButton(this.app, 0, 0, 5, 0xefefef, 0xefefef, "colorWheelButton");
         this.colorWheelButton.x = 30 + this.radius;
         this.colorWheelButton.y = 30 + this.radius;
         this.colorWheelButton.addOutline();
         this.addChild(this.colorWheelButton);
 
-        this.colorPickButton = new CircularButton(this.app, 0, 0, 20, 0xFFFFFF, 0xFF0000, "colorWheelButton");
+        this.colorPickButton = new CircularButton(this.app, 0, 0, 20, 0x545454, 0xefefef, "colorWheelButton");
         this.colorPickButton.x = 30;
         this.colorPickButton.y = 30;
         this.addChild(this.colorPickButton);
@@ -155,7 +150,7 @@ class ColorPicker extends PIXI.Container {
         const sprite = new PIXI.Sprite(texture);
         sprite.position.set(10, 10);
 
-        this.addChildAt(sprite, 0);
+        this.addChild(sprite);
     }
 
     hsvToRgb(h, s, v, alpha) {

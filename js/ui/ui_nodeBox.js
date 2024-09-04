@@ -17,7 +17,7 @@ class NodeBox extends PIXI.Container {
         this.ports = [];
 
         //Change Evaluation
-        this.changesToPath = true;
+        //this.changesToPath = true;
 
         //Layout
         //this.container = null;
@@ -37,11 +37,11 @@ class NodeBox extends PIXI.Container {
     }
 
     drawBoxSelected(){
-        this.nodeBox.drawBackground(this.heightY, 0x00FFFF, 5);
+        this.nodeBox.drawBackground(this.heightY, 0xffffff, 1);
     }
 
     drawBox(){
-        this.nodeBox.drawBackground(this.heightY, 0xEEEEEE, 1);
+        this.nodeBox.drawBackground(this.heightY, 0x000000, 1);
     }
 
     #createListItems(type){
@@ -49,16 +49,16 @@ class NodeBox extends PIXI.Container {
             case "Mesh":
                 this.heightY = 2 * this.spacingY;
                 this.drawBox();
-                this.#outputListItem("Verteces", "Verteces");
+                this.#outputListItem("Vertices", "Vertices");
                 //this.#checkBoxListItem("Closed", "Boolean", true);
                 break;
             case "DrawShape":
-                this.heightY = 8 * this.spacingY;
+                this.heightY = 8.2 * this.spacingY;
                 this.drawBox();
                 this.#outputListItem("Canvas", "Canvas");
-                this.#inputListItem("Verteces", "Verteces");
-                this.#colourListItem("Fill Colour", "Colour", this.node.FillColor);
-                this.#colourListItem("Stroke Colour", "Colour", this.node.StrokeColor);
+                this.#inputListItem("Vertices", "Vertices");
+                this.#colorListItem("Fill Color", "Color", this.node.FillColor);
+                this.#colorListItem("Stroke Color", "Color", this.node.StrokeColor);
                 this.#sliderLimListItem("Stroke Thickness", "Int", 0, 100, this.node.StrokeThickness);
                 this.#sliderLimListItem("Fill Alpha", "Int", 0, 1, this.node.FillAlpha);
                 this.#sliderLimListItem("Stroke Alpha", "Int", 0, 100, 50);
@@ -88,15 +88,15 @@ class NodeBox extends PIXI.Container {
             case "Subdivision":
                 this.heightY = 4 * this.spacingY;
                 this.drawBox();
-                this.#outputListItem("Verteces", "Verteces");
-                this.#inputListItem("Verteces", "Verteces");
+                this.#outputListItem("Vertices", "Vertices");
+                this.#inputListItem("Vertices", "Vertices");
                 this.#sliderLimListItem("Iterations", "Int", 0, 5, this.node.Iterations);
                 break;
             case "slider8":
                 this.#slider8ListItem("Unlimited", "Int", 59, true);
                 break;
-            case "colour":
-                this.#colourListItem("Colour", "Colour", "#FF0000");
+            case "color":
+                this.#colorListItem("Color", "Color", "#FF0000");
                 break;
             case "Output":
                 this.heightY = 2 * this.spacingY;
@@ -113,7 +113,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const labelText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const labelText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         labelText.position.set(15, this.itemIndex*this.spacingY + 4);
         this.addChild(labelText);
 
@@ -126,7 +126,7 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const labelText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const labelText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         labelText.anchor.set(1, 0);
         labelText.position.set(this.width- 25, this.itemIndex*this.spacingY + 4);
         this.addChild(labelText);
@@ -140,11 +140,11 @@ class NodeBox extends PIXI.Container {
         this.addChild(port);
         this.ports.push(port);
 
-        const checkBox = new Checkbox(this.app, 170, this.itemIndex*this.spacingY+5, label);
+        const checkBox = new Checkbox(this.app, 170, this.itemIndex*this.spacingY + 4, label);
         checkBox.setToggle(bool);
         this.addChild(checkBox.container);
 
-        const checkBoxText = new PIXI.Text(label, { fontSize: 16, fill: 0x000000 });
+        const checkBoxText = new PIXI.Text(label, { fontSize: 14, fill: 0xffffff });
         checkBoxText.position.set(15, this.itemIndex*this.spacingY + 4);
         this.addChild(checkBoxText);
 
@@ -171,28 +171,30 @@ class NodeBox extends PIXI.Container {
 
         this.itemIndex +=1;
     }
-    #colourListItem(label, dataType, color){
+    #colorListItem(label, dataType, color){
         let port = new Nodeport(this.app, label, dataType, "Input", this.itemIndex);
         port.x = 0;
         port.y = this.itemIndex*this.spacingY + 15;
         this.addChild(port);
         this.ports.push(port);
 
-        const colourButton = new LabeledButton(this.app, 15, this.itemIndex*this.spacingY, 175, 25, label);
-        colourButton.changeColor(color);
-        this.addChild(colourButton.container);
+        const colorButton = new LabeledButton(this.app, 15, this.itemIndex*this.spacingY, 175, 25, label);
+        colorButton.changeColor(color);
+        this.addChild(colorButton.container);
         this.itemIndex +=1;             
     }
-    #colourOutputListItem(label, dataType, value){
+    /*
+    #colorOutputListItem(label, dataType, value){
         let port = new Nodeport(this.app, label, dataType, "Input", this.itemIndex);
         port.x = this.width;
         port.y = this.itemIndex*this.spacingY + 15;
         this.addChild(port);
         this.ports.push(port);
-        let colourItem = new Colourfield(label, value);
-        colourItem.x = 10;
-        colourItem.y = this.itemIndex*this.spacingY;
-        this.addChild(colourItem);   
+        let colorItem = new colorfield(label, value);
+        colorItem.x = 10;
+        colorItem.y = this.itemIndex*this.spacingY;
+        this.addChild(colorItem);
         this.itemIndex +=1;
     }
+    */
 }
