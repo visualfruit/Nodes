@@ -32,7 +32,7 @@ class DropDownMenu {
         //button.name = "addMenu";
         button.name = label;
         button.interactive = true;
-        button.buttonMode = true;
+        button.cursor = 'pointer';
         button.position.set(x, y);
     
         const buttonText = new PIXI.Text(label, { fontSize: 12, fill: 0x000000 });
@@ -71,7 +71,7 @@ class DropDownMenu {
         button.moveTo(4, 20);
         button.lineTo(36, 20);
         button.interactive = true;
-        button.buttonMode = true;
+        button.cursor = 'pointer';
         button.position.set(x, y);
     
         button.on('pointerover', function(){button.alpha = .8});

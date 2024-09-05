@@ -18,7 +18,7 @@ class LabeledButton {
         this.container.addChild(this.text);
 
         this.container.interactive = true;
-        this.container.buttonMode = true;
+        this.container.cursor = 'pointer';
         this.container.on('pointerdown', () => {
             console.log('Button clicked');
 
@@ -71,7 +71,7 @@ class CircularButton extends PIXI.Container{
         this.addChild(this.button);
 
         this.interactive = true;
-        this.buttonMode = true;
+        this.cursor = 'pointer';
 
         this.on('pointerover', this.onPointerOver.bind(this));
         this.on('pointerout', this.onPointerOut.bind(this));
@@ -118,7 +118,7 @@ class Checkbox {
         this.container.addChild(this.tick);
 
         this.container.interactive = true;
-        this.container.buttonMode = true;
+        this.container.cursor = 'pointer';
         this.container.on('pointerdown', this.toggleCheckbox.bind(this));
         this.container.on('pointerover', () => {
             this.container.alpha = .8;
@@ -177,7 +177,7 @@ class Slider {
         this.background.addChild(this.valueText);
 
         this.container.interactive = true;
-        this.container.buttonMode = true;
+        this.container.cursor = 'pointer';
         this.container.on('pointerdown', this.onSliderDown.bind(this));
         this.container.on('pointerover', () => {
             this.container.alpha = .8;
@@ -250,7 +250,7 @@ class Box extends PIXI.Container {
 
         this.headerButton = new PIXI.Container();
         this.headerButton.interactive = true;
-        this.headerButton.buttonMode = true;
+        this.headerButton.cursor = 'pointer';
         this.headerButton.name = "unselected";
         this.addChild(this.headerButton);
 
