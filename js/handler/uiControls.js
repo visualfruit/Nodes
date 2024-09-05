@@ -94,6 +94,7 @@ class UIControls {
             case "addMenu":
                 console.log("clicked on menu item");
                 this.addNode(this.hitObject.type);
+                break;
             default:
                 console.log("no matched context");
         }
@@ -120,7 +121,7 @@ class UIControls {
 
     hittest(inputBox) {
         let hit = this.detectIntersection(inputBox);
-        if (hit == true) {
+        if (hit === true) {
             inputBox.parent.addChild(inputBox);
             inputBox.drawBoxSelected();
             inputBox.nodeBox.headerButton.name = "selected";
@@ -248,7 +249,7 @@ class UIControls {
                 console.log("fromPort.name " + toPort.name);
                 console.log("areNamesEqual " + areNamesEqual);
 
-                if (fromPort.dataType == toPort.dataType && fromNode !== toNode && fromPort.name !== toPort.name){
+                if (fromPort.dataType === toPort.dataType && fromNode !== toNode && fromPort.name !== toPort.name){
         
                     //check which receiving input port
                     
@@ -434,7 +435,7 @@ class UIControls {
 
     removeIndexFromArray(array, index){
         for (const i of array) {
-            if (i == index) {
+            if (i === index) {
                 array.splice(i);
             }
         }
@@ -443,7 +444,7 @@ class UIControls {
     getFromNodeByConnectionId(id){
         const nodeName = this.connections[id].FromNode;
         for (const node of this.uiNodeArray){
-            if (nodeName == node.label) {
+            if (nodeName === node.label) {
                 return node;
             }
         }
@@ -452,7 +453,7 @@ class UIControls {
     isPortUsed(toNode, toPortIndex){
         for (let i = 0; i < toNode.node.Connections.In.length; i++) {
             for (let j = 0; j < this.connections.length; j++) {
-                if (this.connections[j].ToPort == toPortIndex) {
+                if (this.connections[j].ToPort === toPortIndex) {
                     return true;
                 }
             }
