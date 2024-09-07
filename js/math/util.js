@@ -6,8 +6,7 @@ class Util {
         return input.width / input.height;
     }
     static map(value1, value2, newValue){
-        var factor = value1/value2*newValue;
-        return factor;
+        return value1 / value2 * newValue;
     }
     static getTime() {
         var d = new Date();
@@ -19,7 +18,7 @@ class Util {
         return {x: deltaX, y: deltaY};
     }
     static nameAlreadyExists(string, checkString){
-        if (string == checkString){
+        if (string === checkString){
             return true;
         } else {
             return false;

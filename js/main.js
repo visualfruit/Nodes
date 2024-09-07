@@ -78,7 +78,6 @@ function evaluate(outputNode){
 
   }else{
     console.log("no Output...");
-    return;
   }
 }
 

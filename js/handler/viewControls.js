@@ -20,8 +20,8 @@ class ViewControls {
     handlePinchStart(event) {
         const touches = event.touches;
         if (touches.length === 2) {
-            isPinching = true;
-            initialDistance = getDistance(touches[0], touches[1]);
+            this.isPinching = true;
+            this.initialDistance = getDistance(touches[0], touches[1]);
         }
     }
 
@@ -93,9 +93,8 @@ class ViewControls {
         }
     }
     toggleContainer(){
-        if (this.container == this.containerA){
+        if (this.container === this.containerA){
             this.container = this.containerB;
-            return;
         }
         else{
             this.container = this.containerA;
